@@ -41,19 +41,17 @@ const Button = styled.div`
 const Arrow = styled.img`
   vertical-align: top;
 `
-
-const animation = keyframes`
-  from{
-    transform: rotate(0deg)
-  }
-  to{
-    transform: rotate(-360deg)
-  }
-  `
+const NoMoreOffer = styled.div`
+color: #00A0AB;
+align-self: center;
+margin-bottom: 33px;
+`
 
 function App() {
+  const startCard: number = 16
+  const stepAddCard:number = 15
   const [card, setCard] = useState<ICard[]>([])
-  const [countCard, setCountCard] = useState(15)
+  const [countCard, setCountCard] = useState(startCard)
   const [dataCard, setDataCard] = useState<ICard[]>([])
 
   useEffect(
@@ -67,7 +65,7 @@ function App() {
     setCard(cardList.filter((item, index) => {
       if (index <= countCard) return item
     }))
-    setCountCard(prev => prev + 16)
+    setCountCard(prev => prev + stepAddCard)
   }
 
   async function getCards() {
@@ -86,7 +84,8 @@ function App() {
     <Container>
       <Offers>Похожие объявления</Offers>
       <CardList cards={card} />
-      <Button onClick={() => showCard(dataCard)}>Показать еще<Arrow src={arrow} alt="" /></Button>
+      <Button onClick={() => showCard(dataCard)} hidden={card.length === dataCard.length}>Показать еще<Arrow src={arrow} alt="" /></Button>
+      <NoMoreOffer hidden={card.length !== dataCard.length} >Больше не предложений(</NoMoreOffer>
     </Container>
   );
 
